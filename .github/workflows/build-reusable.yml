@@ -26,9 +26,13 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Install ruff
+      - name: Install pre-commit
         run: |
-          uv tool install ruff
+          uv pip install --system pre-commit
+
+      - name: Run pre-commit hooks (all files)
+        run: |
+          pre-commit run --all-files --show-diff-on-failure
 
       - name: Run ruff check
         run: |
