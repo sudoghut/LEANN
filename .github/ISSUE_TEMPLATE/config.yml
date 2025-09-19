@@ -1,14 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: 📖 Documentation
+  - name: Documentation
     url: https://github.com/LEANN-RAG/LEANN-RAG/tree/main/docs
-    about: Read the documentation for setup and usage instructions
-  - name: 💬 Discord Community
-    url: https://discord.gg/your-discord-link
-    about: Join our Discord for discussions and community support
-  - name: 🤔 Discussions
+    about: Read the docs first
+  - name: Discussions
     url: https://github.com/LEANN-RAG/LEANN-RAG/discussions
-    about: Ask questions and share ideas with the community
-  - name: 🧪 Benchmark Question
-    url: https://github.com/LEANN-RAG/LEANN-RAG/discussions/categories/benchmarks
-    about: Share or discuss performance benchmarks
+    about: Ask questions and share ideas
