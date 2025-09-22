@@ -102,3 +102,6 @@ CLAUDE.local.md
 .claude/*.local.*
 .claude/local/*
 benchmarks/data/
+
+## multi vector
+apps/multimodal/vision-based-pdf-multi-vector/multi-vector-colpali-native-weaviate.py
