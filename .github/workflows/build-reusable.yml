@@ -157,11 +157,17 @@ jobs:
       - name: Install build dependencies
         run: |
           uv python install ${{ matrix.python }}
-          uv pip install --python ${{ matrix.python }} scikit-build-core numpy swig Cython pybind11
-          if [[ "$RUNNER_OS" == "Linux" ]]; then
-            uv pip install --python ${{ matrix.python }} auditwheel
+          uv venv --python ${{ matrix.python }} .uv-build
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            BUILD_PY=".uv-build\\Scripts\\python.exe"
           else
-            uv pip install --python ${{ matrix.python }} delocate
+            BUILD_PY=".uv-build/bin/python"
+          fi
+          uv pip install --python "$BUILD_PY" scikit-build-core numpy swig Cython pybind11
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            uv pip install --python "$BUILD_PY" auditwheel
+          else
+            uv pip install --python "$BUILD_PY" delocate
           fi
 
       - name: Set macOS environment variables
