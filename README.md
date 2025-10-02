@@ -176,7 +176,7 @@ response = chat.ask("How much storage does LEANN save?", top_k=1)
 
 ## RAG on Everything!
 
-LEANN supports RAG on various data sources including documents (`.pdf`, `.txt`, `.md`), Apple Mail, Google Search History, WeChat, Claude conversations, and more.
+LEANN supports RAG on various data sources including documents (`.pdf`, `.txt`, `.md`), Apple Mail, Google Search History, WeChat, ChatGPT conversations, Claude conversations, and more.
 
 
 
@@ -474,6 +474,80 @@ python -m apps.wechat_rag --force-export --query "work schedule"
 Once the index is built, you can ask questions like:
 
 - "我想买魔术师约翰逊的球衣，给我一些对应聊天记录?" (Chinese: Show me chat records about buying Magic Johnson's jersey)
+
+</details>
+
+### 🤖 ChatGPT Chat History: Your Personal AI Conversation Archive!
+
+Transform your ChatGPT conversations into a searchable knowledge base! Search through all your ChatGPT discussions about coding, research, brainstorming, and more.
+
+```bash
+python -m apps.chatgpt_rag --export-path chatgpt_export.html --query "How do I create a list in Python?"
+```
+
+**Unlock your AI conversation history.** Never lose track of valuable insights from your ChatGPT discussions again.
+
+<details>
+<summary><strong>📋 Click to expand: How to Export ChatGPT Data</strong></summary>
+
+**Step-by-step export process:**
+
+1. **Sign in to ChatGPT**
+2. **Click your profile icon** in the top right corner
+3. **Navigate to Settings** → **Data Controls**
+4. **Click "Export"** under Export Data
+5. **Confirm the export** request
+6. **Download the ZIP file** from the email link (expires in 24 hours)
+7. **Extract or use directly** with LEANN
+
+**Supported formats:**
+- `.html` files from ChatGPT exports
+- `.zip` archives from ChatGPT
+- Directories with multiple export files
+
+</details>
+
+<details>
+<summary><strong>📋 Click to expand: ChatGPT-Specific Arguments</strong></summary>
+
+#### Parameters
+```bash
+--export-path PATH           # Path to ChatGPT export file (.html/.zip) or directory (default: ./chatgpt_export)
+--separate-messages         # Process each message separately instead of concatenated conversations
+--chunk-size N              # Text chunk size (default: 512)
+--chunk-overlap N           # Overlap between chunks (default: 128)
+```
+
+#### Example Commands
+```bash
+# Basic usage with HTML export
+python -m apps.chatgpt_rag --export-path conversations.html
+
+# Process ZIP archive from ChatGPT
+python -m apps.chatgpt_rag --export-path chatgpt_export.zip
+
+# Search with specific query
+python -m apps.chatgpt_rag --export-path chatgpt_data.html --query "Python programming help"
+
+# Process individual messages for fine-grained search
+python -m apps.chatgpt_rag --separate-messages --export-path chatgpt_export.html
+
+# Process directory containing multiple exports
+python -m apps.chatgpt_rag --export-path ./chatgpt_exports/ --max-items 1000
+```
+
+</details>
+
+<details>
+<summary><strong>💡 Click to expand: Example queries you can try</strong></summary>
+
+Once your ChatGPT conversations are indexed, you can search with queries like:
+- "What did I ask ChatGPT about Python programming?"
+- "Show me conversations about machine learning algorithms"
+- "Find discussions about web development frameworks"
+- "What coding advice did ChatGPT give me?"
+- "Search for conversations about debugging techniques"
+- "Find ChatGPT's recommendations for learning resources"
 
 </details>
 
