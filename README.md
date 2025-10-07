@@ -20,7 +20,7 @@ LEANN is an innovative vector database that democratizes personal AI. Transform 
 
 LEANN achieves this through *graph-based selective recomputation* with *high-degree preserving pruning*, computing embeddings on-demand instead of storing them all. [Illustration Fig →](#️-architecture--how-it-works) | [Paper →](https://arxiv.org/abs/2506.08276)
 
-**Ready to RAG Everything?** Transform your laptop into a personal AI assistant that can semantic search your **[file system](#-personal-data-manager-process-any-documents-pdf-txt-md)**, **[emails](#-your-personal-email-secretary-rag-on-apple-mail)**, **[browser history](#-time-machine-for-the-web-rag-your-entire-browser-history)**, **[chat history](#-wechat-detective-unlock-your-golden-memories)** ([WeChat](#-wechat-detective-unlock-your-golden-memories), [iMessage](#-imessage-history-your-personal-conversation-archive)), **[agent memory](#-chatgpt-chat-history-your-personal-ai-conversation-archive)** ([ChatGPT](#-chatgpt-chat-history-your-personal-ai-conversation-archive), [Claude](#-claude-chat-history-your-personal-ai-conversation-archive)), **[codebase](#-claude-code-integration-transform-your-development-workflow)**\* , or external knowledge bases (i.e., 60M documents) - all on your laptop, with zero cloud costs and complete privacy.
+**Ready to RAG Everything?** Transform your laptop into a personal AI assistant that can semantic search your **[file system](#-personal-data-manager-process-any-documents-pdf-txt-md)**, **[emails](#-your-personal-email-secretary-rag-on-apple-mail)**, **[browser history](#-time-machine-for-the-web-rag-your-entire-browser-history)**, **[chat history](#-wechat-detective-unlock-your-golden-memories)** ([WeChat](#-wechat-detective-unlock-your-golden-memories), [iMessage](#-imessage-history-your-personal-conversation-archive)), **[agent memory](#-chatgpt-chat-history-your-personal-ai-conversation-archive)** ([ChatGPT](#-chatgpt-chat-history-your-personal-ai-conversation-archive), [Claude](#-claude-chat-history-your-personal-ai-conversation-archive)), **[live data](#mcp-integration-rag-on-live-data-from-any-platform)** ([Slack](#slack-messages-search-your-team-conversations), [Twitter](#twitter-bookmarks-your-personal-tweet-library)), **[codebase](#-claude-code-integration-transform-your-development-workflow)**\* , or external knowledge bases (i.e., 60M documents) - all on your laptop, with zero cloud costs and complete privacy.
 
 
 \* Claude Code only supports basic `grep`-style keyword search. **LEANN** is a drop-in **semantic search MCP service fully compatible with Claude Code**, unlocking intelligent retrieval without changing your workflow. 🔥 Check out [the easy setup →](packages/leann-mcp/README.md)
@@ -48,7 +48,7 @@ LEANN achieves this through *graph-based selective recomputation* with *high-deg
 
 ## Installation
 
-### Prerequisites: Install uv
+### 📦 Prerequisites: Install uv
 
 [Install uv](https://docs.astral.sh/uv/getting-started/installation/#installation-methods) first if you don't have it. Typically, you can install it with:
 
@@ -56,7 +56,7 @@ LEANN achieves this through *graph-based selective recomputation* with *high-deg
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### Quick Install
+### 🚀 Quick Install
 
 Clone the repository to access all examples and try amazing applications,
 
@@ -804,7 +804,11 @@ python -m apps.slack_rag \
 
 **Setup Requirements:**
 1. Install a Slack MCP server (e.g., `npm install -g slack-mcp-server`)
-2. Configure Slack API credentials:
+2. Create a Slack App and get API credentials:
+   - Go to [api.slack.com/apps](https://api.slack.com/apps) and create a new app
+   - Under "OAuth & Permissions", add these Bot Token Scopes: `channels:read`, `channels:history`, `groups:read`, `groups:history`, `im:read`, `im:history`, `mpim:read`, `mpim:history`
+   - Install the app to your workspace and copy the "Bot User OAuth Token" (starts with `xoxb-`)
+   - Under "App-Level Tokens", create a token with `connections:write` scope (starts with `xapp-`)
    ```bash
    export SLACK_BOT_TOKEN="xoxb-your-bot-token"
    export SLACK_APP_TOKEN="xapp-your-app-token"
@@ -838,7 +842,11 @@ python -m apps.twitter_rag \
 
 **Setup Requirements:**
 1. Install a Twitter MCP server (e.g., `npm install -g twitter-mcp-server`)
-2. Configure Twitter API credentials:
+2. Get Twitter API credentials:
+   - Apply for a Twitter Developer Account at [developer.twitter.com](https://developer.twitter.com)
+   - Create a new app in the Twitter Developer Portal
+   - Generate API keys and access tokens with "Read" permissions
+   - For bookmarks access, you may need Twitter API v2 with appropriate scopes
    ```bash
    export TWITTER_API_KEY="your-api-key"
    export TWITTER_API_SECRET="your-api-secret"
