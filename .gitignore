@@ -101,3 +101,5 @@ CLAUDE.local.md
 .claude/*.local.*
 .claude/local/*
 benchmarks/data/
+apps/multimodal/vision-based-pdf-multi-vector/figures/*
+apps/multimodal/vision-based-pdf-multi-vector/pages/*
