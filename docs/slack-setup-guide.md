@@ -120,6 +120,25 @@ python -m apps.slack_rag \
   --query "What did we discuss about the project?"
 ```
 
+### 4.3 Real RAG Query Example
+
+To ask intelligent questions about your Slack conversations:
+
+```bash
+# Ask about a specific topic discussed in your channels
+python -m apps.slack_rag \
+  --mcp-server "slack-mcp-server" \
+  --workspace-name "Sky Lab Computing" \
+  --channels random general \
+  --query "What is LEANN about?"
+```
+
+This will:
+1. **Retrieve relevant messages** from the specified channels
+2. **Index the content** for semantic search
+3. **Generate an intelligent answer** based on the retrieved context
+4. **Provide citations** showing which messages were used
+
 ## Success Example: Working Integration
 
 Here's what a successful Slack integration looks like in practice:
@@ -161,6 +180,42 @@ The following screenshot shows a successful integration with VS Code displaying 
 - **Comprehensive Coverage**: Access to multiple channels including specialized research groups
 
 This demonstrates that your Slack integration is fully functional and ready for RAG queries across your entire workspace.
+
+### Real RAG Example: Querying Slack Messages
+
+Here's what happens when you ask a real question about your Slack conversations:
+
+**Query**: "What is LEANN about?"
+
+**System Response**: The system first retrieves relevant messages from your Slack channels, then uses an LLM to provide an intelligent answer based on the retrieved context.
+
+**Retrieved Messages**:
+```
+We'd like to share LEANN — a local RAG system with a 97% smaller index that lets you chat with all your emails, file system, and more.
+
+It's fully Claude Code–compatible via a built-in semantic search MCP server.
+
+:loudspeaker: Tweet: https://x.com/YichuanM/status/1953886752240013803 (reposts appreciated :raised_hands:)
+
+:computer: Code: https://github.com/yichuan-w/LEANN (stars/shares welcome)
+
+1/N :rocket: Launching LEANN — the tiniest vector index on Earth!
+Fast, accurate, and 100% private RAG on your MacBook.
+0% internet. 97% smaller. Semantic search on everything.
+Your personal Jarvis, ready to dive into your emails, chats, and more.
+```
+
+**Generated Answer**: "LEANN is a local RAG (Retrieval-Augmented Generation) system designed to be extremely efficient with storage and privacy. Key features include:
+
+- **97% smaller index** compared to traditional vector databases
+- **100% private** - runs entirely on your local device with no internet required
+- **Universal compatibility** - works with emails, file systems, and more
+- **Claude Code integration** via built-in semantic search MCP server
+- **Fast and accurate** semantic search capabilities
+
+The system acts as your personal AI assistant that can search through all your personal data while maintaining complete privacy."
+
+This example shows how LEANN can intelligently search through your Slack conversations and provide contextual answers based on the actual messages shared in your workspace.
 
 ## Common Issues and Solutions
 
