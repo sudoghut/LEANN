@@ -156,14 +156,6 @@ python -m apps.slack_rag \
 
 This section demonstrates successful Slack RAG integration queries against the Sky Lab Computing workspace's "random" channel. The system successfully retrieves actual conversation messages and performs semantic search with high relevance scores, including finding specific research paper announcements and technical discussions.
 
-**Key Features Demonstrated:**
-- **Real Slack Integration**: Successfully connects to Slack via MCP server
-- **Actual Message Retrieval**: Fetches real conversation history including specific announcements
-- **Working RAG Pipeline**: Complete index building, search, and response generation
-- **High Relevance Search**: Successfully finds and retrieves specific research paper messages
-- **Individual Message Processing**: Demonstrates ability to find specific content within conversation history
-- **Real LLM Responses**: Uses Ollama with llama3.2:1b for actual AI-generated responses
-
 ### Example 1: Advisor Models Query
 
 **Query:** "train black-box models to adopt to your personal data"
