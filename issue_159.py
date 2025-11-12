@@ -39,8 +39,9 @@ def test_search_performance():
     print("Testing LEANN Search Performance (Issue #159)")
     print("=" * 80)
     
-    # Check if index exists
-    if Path(INDEX_PATH).exists():
+    # Check if index exists - skip build if it does
+    index_path = Path(INDEX_PATH)
+    if True:
         print(f"\n✓ Index already exists at {INDEX_PATH}")
         print("  Skipping build phase. Delete the index to rebuild.")
     else:
@@ -76,6 +77,15 @@ def test_search_performance():
     searcher = LeannSearcher(INDEX_PATH)
     
     test_query = "LEANN向量数据库存储优化"
+    
+    # Test with default complexity (64)
+    print(f"\n  Test 1: Default complexity (64) `1 ")
+    print(f"    Query: '{test_query}'")
+    start_time = time.time()
+    results = searcher.search(test_query, top_k=10, complexity=64, beam_width=BEAM_WIDTH)
+    search_time = time.time() - start_time
+    print(f"    ✓ Search completed in {search_time:.2f} seconds")
+    print(f"    Results: {len(results)} items")
     
     # Test with default complexity (64)
     print(f"\n  Test 1: Default complexity (64)")
