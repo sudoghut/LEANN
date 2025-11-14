@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
 """
-Modular script to reproduce NDCG results for ViDoRe v2 benchmark.
+Modular script to reproduce NDCG results for ViDoRe v1 benchmark.
 
 This script uses the interface from leann_multi_vector.py to:
-1. Download ViDoRe v2 datasets
+1. Download ViDoRe v1 datasets
 2. Build indexes (LEANN or Fast-Plaid)
 3. Perform retrieval
 4. Evaluate using NDCG metrics
 
 Usage:
-    # Evaluate all ViDoRe v2 tasks
-    python vidore_v2_benchmark.py --model colqwen2 --tasks all
+    # Evaluate all ViDoRe v1 tasks
+    python vidore_v1_benchmark.py --model colqwen2 --tasks all
     
     # Evaluate specific task
-    python vidore_v2_benchmark.py --model colqwen2 --task Vidore2ESGReportsRetrieval
+    python vidore_v1_benchmark.py --model colqwen2 --task VidoreArxivQARetrieval
     
     # Use Fast-Plaid index
-    python vidore_v2_benchmark.py --model colqwen2 --use-fast-plaid --fast-plaid-index-path ./indexes/vidore_fastplaid
+    python vidore_v1_benchmark.py --model colqwen2 --use-fast-plaid --fast-plaid-index-path ./indexes/vidore_fastplaid
     
     # Rebuild index
-    python vidore_v2_benchmark.py --model colqwen2 --rebuild-index
+    python vidore_v1_benchmark.py --model colqwen2 --rebuild-index
 """
 
 import argparse
@@ -37,90 +37,79 @@ from leann_multi_vector import (
 
 _ensure_repo_paths_importable(__file__)
 
-# Language name to dataset language field value mapping
-# Dataset uses ISO 639-3 + ISO 15924 format (e.g., "eng-Latn")
-LANGUAGE_MAPPING = {
-    "english": "eng-Latn",
-    "french": "fra-Latn",
-    "spanish": "spa-Latn",
-    "german": "deu-Latn",
-}
-
-# ViDoRe v2 task configurations
+# ViDoRe v1 task configurations
 # Prompts match MTEB task metadata prompts
-VIDORE_V2_TASKS = {
-    "Vidore2ESGReportsRetrieval": {
-        "dataset_path": "vidore/esg_reports_v2",
-        "revision": "0542c0d03da0ec1c8cbc517c8d78e7e95c75d3d3",
-        "languages": ["french", "spanish", "english", "german"],
+VIDORE_V1_TASKS = {
+    "VidoreArxivQARetrieval": {
+        "dataset_path": "vidore/arxivqa_test_subsampled_beir",
+        "revision": "7d94d570960eac2408d3baa7a33f9de4822ae3e4",
         "prompt": {"query": "Find a screenshot that relevant to the user's question."},
     },
-    "Vidore2EconomicsReportsRetrieval": {
-        "dataset_path": "vidore/economics_reports_v2",
-        "revision": "b3e3a04b07fbbaffe79be49dabf92f691fbca252",
-        "languages": ["french", "spanish", "english", "german"],
+    "VidoreDocVQARetrieval": {
+        "dataset_path": "vidore/docvqa_test_subsampled_beir",
+        "revision": "162ba2fc1a8437eda8b6c37b240bc1c0f0deb092",
         "prompt": {"query": "Find a screenshot that relevant to the user's question."},
     },
-    "Vidore2BioMedicalLecturesRetrieval": {
-        "dataset_path": "vidore/biomedical_lectures_v2",
-        "revision": "a29202f0da409034d651614d87cd8938d254e2ea",
-        "languages": ["french", "spanish", "english", "german"],
+    "VidoreInfoVQARetrieval": {
+        "dataset_path": "vidore/infovqa_test_subsampled_beir",
+        "revision": "b802cc5fd6c605df2d673a963667d74881d2c9a4",
         "prompt": {"query": "Find a screenshot that relevant to the user's question."},
     },
-    "Vidore2ESGReportsHLRetrieval": {
-        "dataset_path": "vidore/esg_reports_human_labeled_v2",
-        "revision": "6d467dedb09a75144ede1421747e47cf036857dd",
-        # Note: This dataset doesn't have language filtering - all queries are English
-        "languages": None,  # No language filtering needed
+    "VidoreTabfquadRetrieval": {
+        "dataset_path": "vidore/tabfquad_test_subsampled_beir",
+        "revision": "61a2224bcd29b7b261a4892ff4c8bea353527a31",
+        "prompt": {"query": "Find a screenshot that relevant to the user's question."},
+    },
+    "VidoreTatdqaRetrieval": {
+        "dataset_path": "vidore/tatdqa_test_beir",
+        "revision": "5feb5630fdff4d8d189ffedb2dba56862fdd45c0",
+        "prompt": {"query": "Find a screenshot that relevant to the user's question."},
+    },
+    "VidoreShiftProjectRetrieval": {
+        "dataset_path": "vidore/shiftproject_test_beir",
+        "revision": "84a382e05c4473fed9cff2bbae95fe2379416117",
+        "prompt": {"query": "Find a screenshot that relevant to the user's question."},
+    },
+    "VidoreSyntheticDocQAAIRetrieval": {
+        "dataset_path": "vidore/syntheticDocQA_artificial_intelligence_test_beir",
+        "revision": "2d9ebea5a1c6e9ef4a3b902a612f605dca11261c",
+        "prompt": {"query": "Find a screenshot that relevant to the user's question."},
+    },
+    "VidoreSyntheticDocQAEnergyRetrieval": {
+        "dataset_path": "vidore/syntheticDocQA_energy_test_beir",
+        "revision": "9935aadbad5c8deec30910489db1b2c7133ae7a7",
+        "prompt": {"query": "Find a screenshot that relevant to the user's question."},
+    },
+    "VidoreSyntheticDocQAGovernmentReportsRetrieval": {
+        "dataset_path": "vidore/syntheticDocQA_government_reports_test_beir",
+        "revision": "b4909afa930f81282fd20601e860668073ad02aa",
+        "prompt": {"query": "Find a screenshot that relevant to the user's question."},
+    },
+    "VidoreSyntheticDocQAHealthcareIndustryRetrieval": {
+        "dataset_path": "vidore/syntheticDocQA_healthcare_industry_test_beir",
+        "revision": "f9e25d5b6e13e1ad9f5c3cce202565031b3ab164",
         "prompt": {"query": "Find a screenshot that relevant to the user's question."},
     },
 }
 
 
-def load_vidore_v2_data(
+def load_vidore_v1_data(
     dataset_path: str,
     revision: Optional[str] = None,
     split: str = "test",
-    language: Optional[str] = None,
 ):
     """
-    Load ViDoRe v2 dataset.
+    Load ViDoRe v1 dataset.
     
     Returns:
         corpus: dict mapping corpus_id to PIL Image
         queries: dict mapping query_id to query text
         qrels: dict mapping query_id to dict of {corpus_id: relevance_score}
     """
-    print(f"Loading dataset: {dataset_path} (split={split}, language={language})")
+    print(f"Loading dataset: {dataset_path} (split={split})")
     
     # Load queries
     query_ds = load_dataset(dataset_path, "queries", split=split, revision=revision)
-    
-    # Check if dataset has language field before filtering
-    has_language_field = len(query_ds) > 0 and "language" in query_ds.column_names
-    
-    if language and has_language_field:
-        # Map language name to dataset language field value (e.g., "english" -> "eng-Latn")
-        dataset_language = LANGUAGE_MAPPING.get(language, language)
-        query_ds_filtered = query_ds.filter(lambda x: x.get("language") == dataset_language)
-        # Check if filtering resulted in empty dataset
-        if len(query_ds_filtered) == 0:
-            print(f"Warning: No queries found after filtering by language '{language}' (mapped to '{dataset_language}').")
-            # Try with original language value (dataset might use simple names like 'english')
-            print(f"Trying with original language value '{language}'...")
-            query_ds_filtered = query_ds.filter(lambda x: x.get("language") == language)
-            if len(query_ds_filtered) == 0:
-                # Try to get a sample to see actual language values
-                try:
-                    sample_ds = load_dataset(dataset_path, "queries", split=split, revision=revision)
-                    if len(sample_ds) > 0 and "language" in sample_ds.column_names:
-                        sample_langs = set(sample_ds["language"])
-                        print(f"Available language values in dataset: {sample_langs}")
-                except Exception:
-                    pass
-            else:
-                print(f"Found {len(query_ds_filtered)} queries using original language value '{language}'")
-        query_ds = query_ds_filtered
     
     queries = {}
     for row in query_ds:
@@ -173,51 +162,37 @@ def evaluate_task(
     index_path: str,
     use_fast_plaid: bool = False,
     fast_plaid_index_path: Optional[str] = None,
-    language: Optional[str] = None,
     rebuild_index: bool = False,
-    top_k: int = 100,
+    top_k: int = 1000,
     first_stage_k: int = 500,
-    k_values: list[int] = [1, 3, 5, 10, 100],
+    k_values: list[int] = [1, 3, 5, 10, 20, 100, 1000],
     output_dir: Optional[str] = None,
 ):
     """
-    Evaluate a single ViDoRe v2 task.
+    Evaluate a single ViDoRe v1 task.
     """
     print(f"\n{'='*80}")
     print(f"Evaluating task: {task_name}")
     print(f"{'='*80}")
     
     # Get task config
-    if task_name not in VIDORE_V2_TASKS:
-        raise ValueError(f"Unknown task: {task_name}. Available: {list(VIDORE_V2_TASKS.keys())}")
+    if task_name not in VIDORE_V1_TASKS:
+        raise ValueError(f"Unknown task: {task_name}. Available: {list(VIDORE_V1_TASKS.keys())}")
     
-    task_config = VIDORE_V2_TASKS[task_name]
+    task_config = VIDORE_V1_TASKS[task_name]
     dataset_path = task_config["dataset_path"]
     revision = task_config["revision"]
     
-    # Determine language
-    if language is None:
-        # Use first language if multiple available
-        languages = task_config.get("languages")
-        if languages is None:
-            # Task doesn't support language filtering (e.g., Vidore2ESGReportsHLRetrieval)
-            language = None
-        elif len(languages) == 1:
-            language = languages[0]
-        else:
-            language = None
-    
     # Load data
-    corpus, queries, qrels = load_vidore_v2_data(
+    corpus, queries, qrels = load_vidore_v1_data(
         dataset_path=dataset_path,
         revision=revision,
         split="test",
-        language=language,
     )
     
     # Check if we have any queries
     if len(queries) == 0:
-        print(f"\nWarning: No queries found for task {task_name} with language {language}. Skipping evaluation.")
+        print(f"\nWarning: No queries found for task {task_name}. Skipping evaluation.")
         # Return zero scores
         scores = {}
         for k in k_values:
@@ -290,7 +265,7 @@ def evaluate_task(
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Evaluate ViDoRe v2 benchmark using LEANN/Fast-Plaid indexing"
+        description="Evaluate ViDoRe v1 benchmark using LEANN/Fast-Plaid indexing"
     )
     parser.add_argument(
         "--model",
@@ -334,16 +309,10 @@ def main():
         help="Rebuild index even if it exists",
     )
     parser.add_argument(
-        "--language",
-        type=str,
-        default=None,
-        help="Language to evaluate (default: first available)",
-    )
-    parser.add_argument(
         "--top-k",
         type=int,
-        default=100,
-        help="Top-k results to retrieve",
+        default=1000,
+        help="Top-k results to retrieve (MTEB default is max(k_values)=1000)",
     )
     parser.add_argument(
         "--first-stage-k",
@@ -354,13 +323,13 @@ def main():
     parser.add_argument(
         "--k-values",
         type=str,
-        default="1,3,5,10,100",
+        default="1,3,5,10,20,100,1000",
         help="Comma-separated k values for evaluation (e.g., '1,3,5,10,100')",
     )
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="./vidore_v2_results",
+        default="./vidore_v1_results",
         help="Output directory for results",
     )
     
@@ -373,7 +342,7 @@ def main():
     if args.task:
         tasks_to_eval = [args.task]
     elif args.tasks.lower() == "all":
-        tasks_to_eval = list(VIDORE_V2_TASKS.keys())
+        tasks_to_eval = list(VIDORE_V1_TASKS.keys())
     else:
         tasks_to_eval = [t.strip() for t in args.tasks.split(",")]
     
@@ -389,7 +358,6 @@ def main():
                 index_path=args.index_path,
                 use_fast_plaid=args.use_fast_plaid,
                 fast_plaid_index_path=args.fast_plaid_index_path,
-                language=args.language,
                 rebuild_index=args.rebuild_index,
                 top_k=args.top_k,
                 first_stage_k=args.first_stage_k,
