@@ -239,8 +239,8 @@ def create_ast_chunks(
 
             chunks = chunk_builder.chunkify(code_content)
             for chunk in chunks:
-                chunk_text = None
-                astchunk_metadata = {}
+                chunk_text: str | None = None
+                astchunk_metadata: dict[str, Any] = {}
 
                 if hasattr(chunk, "text"):
                     chunk_text = chunk.text

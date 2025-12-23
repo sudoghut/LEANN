@@ -14,6 +14,7 @@ import argparse
 import pickle
 import tempfile
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 from PIL import Image
@@ -65,7 +66,7 @@ class ImageRAG(BaseRAGExample):
             help="Batch size for CLIP embedding generation (default: 32)",
         )
 
-    async def load_data(self, args) -> list[str]:
+    async def load_data(self, args) -> list[dict[str, Any]]:
         """Load images, generate CLIP embeddings, and return text descriptions."""
         self._image_data = self._load_images_and_embeddings(args)
         return [entry["text"] for entry in self._image_data]
