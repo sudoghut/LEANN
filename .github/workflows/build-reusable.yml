@@ -18,7 +18,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 1
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           ref: ${{ inputs.ref }}
 
       - name: Install uv and Python
@@ -95,7 +95,7 @@ jobs:
         with:
           submodules: recursive
           fetch-depth: 1
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
           ref: ${{ inputs.ref }}
 
       - name: Install uv and Python
