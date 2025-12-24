@@ -207,9 +207,9 @@ jobs:
             export CC=clang
             export CXX=clang++
             # Set deployment target based on runner
-            # macos-15-intel targets 13.0 for backward compatibility with older Intel Macs
+            # macos-15-intel runs macOS 15, so target 15.0 (system libraries require it)
             if [[ "${{ matrix.os }}" == "macos-15-intel" ]]; then
-              export MACOSX_DEPLOYMENT_TARGET=13.0
+              export MACOSX_DEPLOYMENT_TARGET=15.0
             elif [[ "${{ matrix.os }}" == macos-14* ]]; then
               export MACOSX_DEPLOYMENT_TARGET=14.0
             elif [[ "${{ matrix.os }}" == macos-15* ]]; then
@@ -230,9 +230,9 @@ jobs:
             export CC=clang
             export CXX=clang++
             # Set deployment target based on runner
-            # macos-15-intel targets 13.3 for backward compatibility (DiskANN needs 13.3+)
+            # macos-15-intel runs macOS 15, so target 15.0 (system libraries require it)
             if [[ "${{ matrix.os }}" == "macos-15-intel" ]]; then
-              export MACOSX_DEPLOYMENT_TARGET=13.3
+              export MACOSX_DEPLOYMENT_TARGET=15.0
             elif [[ "${{ matrix.os }}" == macos-14* ]]; then
               export MACOSX_DEPLOYMENT_TARGET=14.0
             elif [[ "${{ matrix.os }}" == macos-15* ]]; then
@@ -276,9 +276,10 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           # Determine deployment target based on runner OS
+          # macos-15-intel runs macOS 15, so target 15.0 (system libraries require it)
           if [[ "${{ matrix.os }}" == "macos-15-intel" ]]; then
-            HNSW_TARGET="13.0"
-            DISKANN_TARGET="13.3"
+            HNSW_TARGET="15.0"
+            DISKANN_TARGET="15.0"
           elif [[ "${{ matrix.os }}" == macos-14* ]]; then
             HNSW_TARGET="14.0"
             DISKANN_TARGET="14.0"
@@ -343,8 +344,9 @@ jobs:
           PY_TAG=$($UV_PY -c "import sys; print(f'cp{sys.version_info[0]}{sys.version_info[1]}')")
 
           if [[ "$RUNNER_OS" == "macOS" ]]; then
+            # macos-15-intel runs macOS 15, so target 15.0 (system libraries require it)
             if [[ "${{ matrix.os }}" == "macos-15-intel" ]]; then
-              export MACOSX_DEPLOYMENT_TARGET=13.3
+              export MACOSX_DEPLOYMENT_TARGET=15.0
             elif [[ "${{ matrix.os }}" == macos-14* ]]; then
               export MACOSX_DEPLOYMENT_TARGET=14.0
             elif [[ "${{ matrix.os }}" == macos-15* ]]; then
