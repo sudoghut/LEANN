@@ -1,0 +1,8 @@
+FROM python:3.11-slim
+
+WORKDIR /workspace
+
+# Install dependencies in the image to avoid repeated installs at runtime.
+RUN pip install -U pip && \
+    pip install torch --index-url https://download.pytorch.org/whl/cu121 && \
+    pip install sentence-transformers llama-index leann leann-backend-hnsw leann-backend-diskann

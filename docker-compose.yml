@@ -1,0 +1,15 @@
+services:
+  leann-rag:
+    build:
+      context: .
+      dockerfile: Dockerfile.rag
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
