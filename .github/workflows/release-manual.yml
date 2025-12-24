@@ -19,6 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          token: ${{ secrets.GH_PAT }}
 
       - name: Validate version
         run: |
@@ -73,6 +76,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 1
+          token: ${{ secrets.GH_PAT }}
           ref: 'main'
 
       - name: Download all artifacts

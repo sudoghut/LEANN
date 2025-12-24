@@ -16,8 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref }}
           submodules: recursive
+          fetch-depth: 1
+          token: ${{ secrets.GH_PAT }}
+          ref: ${{ inputs.ref }}
 
       - name: Install uv and Python
         uses: astral-sh/setup-uv@v6
@@ -91,8 +93,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          ref: ${{ inputs.ref }}
           submodules: recursive
+          fetch-depth: 1
+          token: ${{ secrets.GH_PAT }}
+          ref: ${{ inputs.ref }}
 
       - name: Install uv and Python
         uses: astral-sh/setup-uv@v6
