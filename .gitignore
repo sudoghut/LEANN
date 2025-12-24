@@ -34,6 +34,7 @@ skip_reorder_comparison/
 analysis_results/
 build/
 .cache/
+cache/
 nprobe_logs/
 micro/results
 micro/contriever-INT8

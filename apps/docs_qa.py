@@ -3,6 +3,7 @@ Query a LEANN RAG index built from ./docs (default).
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -69,6 +70,8 @@ def get_llm_config(args: argparse.Namespace) -> dict[str, Any]:
         config["model"] = args.llm_model or "gpt-4o"
         config["base_url"] = resolve_openai_base_url(args.llm_api_base)
         resolved_key = resolve_openai_api_key(args.llm_api_key)
+        if not resolved_key:
+            resolved_key = os.getenv("OPENAI_API_INTERNAL_KEY")
         if resolved_key:
             config["api_key"] = resolved_key
     elif args.llm == "ollama":

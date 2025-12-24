@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile.rag
     volumes:
       - .:/workspace
+      - ./cache/huggingface:/root/.cache/huggingface
+      - ./cache/torch:/root/.cache/torch
     working_dir: /workspace
     deploy:
       resources:

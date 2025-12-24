@@ -70,6 +70,7 @@ uv run python apps/docs_qa.py
 ## Notes
 
 - The project directory is mounted into `/workspace` inside the container.
+- Hugging Face and Torch caches are mounted to `./cache` to avoid repeated downloads.
 - The default index output is `./rag_index/docs_rag.leann` in the repo.
 - If your Docker Compose ignores `deploy` GPU reservations, run with `docker compose run --rm --gpus all ...`.
 - If you need a different Python package mirror, update `Dockerfile.rag` to add `-i <mirror>` to the `pip install` commands.
@@ -104,9 +105,27 @@ Provide an API key via environment variable or `--llm-api-key`.
 ```bash
 # Using environment variable
 docker compose run --rm -e OPENAI_API_KEY=your_key leann-rag \
-  python apps/docs_qa.py --llm openai --query "你的问题"
+  python apps/docs_qa.py --llm openai --query "????"
 
 # Using explicit parameter
 docker compose run --rm leann-rag \
-  python apps/docs_qa.py --llm openai --llm-api-key your_key --query "你的问题"
+  python apps/docs_qa.py --llm openai --llm-api-key your_key --query "????"
+```
+
+Internal OpenAI-compatible endpoints can be used by setting the base URL and `OPENAI_API_INTERNAL_KEY`.
+
+```bash
+# Harvard internal OpenAI-compatible endpoint
+docker compose run --rm -e OPENAI_API_INTERNAL_KEY=your_key leann-rag \
+  python apps/docs_qa.py --llm openai \
+  --llm-api-base https://go.apis.huit.harvard.edu/ais-openai-direct-limited-schools/v1 \
+  --query "????"
+```
+
+```bash
+# uv run: Harvard internal OpenAI-compatible endpoint
+OPENAI_API_INTERNAL_KEY=your_key \
+  uv run python apps/docs_qa.py --llm openai \
+  --llm-api-base https://go.apis.huit.harvard.edu/ais-openai-direct-limited-schools/v1 \
+  --query "????"
 ```
